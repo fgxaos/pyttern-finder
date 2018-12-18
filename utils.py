@@ -12,6 +12,18 @@ def load_model(arch):
     if arch == 'googlenet':
         from googlenet import get_googlenet
         model = get_googlenet(pretrain=True)
+    elif arch == 'alexnet':
+
+    elif arch == 'vgg':
+    
+    elif arch == 'resnet':
+    
+    elif arch == 'squeezenet':
+
+    elif arch == 'densenet':
+
+    elif arch == 'inception':
+
     else:
         model = models.__dict__[arch](pretrained=True)
     model.eval()
@@ -33,3 +45,13 @@ def upsample(inp, size):
     upsample_inp = inp.new()
     f(backend.library_state, inp, upsample_inp, size[0], size[1])
     return upsample_inp
+
+
+def extract_info_from_name(arch_name):
+    # Architecture is named using the following code: 
+    # saving_model_name = model_name + "_" + str(batch_size) + "_" + str(num_epochs) + ".pth"
+    list_names = arch_name.split("_")
+    model_name = list_name[0]
+    batch_size = list_name[1]
+    num_epochs = list_name[2][:-4]
+    return model_name, batch_size, num_epochs
