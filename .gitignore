@@ -7,3 +7,8 @@
 .ipynb_checkpoints/
 .DS_Store
 
+# Don't push the cat/dog images
+/model_training_data
+
+# Don't push the pretrained models
+*.pth
