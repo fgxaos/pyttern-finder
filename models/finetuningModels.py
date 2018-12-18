@@ -1,14 +1,3 @@
-"""
-In general, both transfer learning methods (finetuning & feature extraction) 
-follow the same few steps:
-    - Initialize the pretrained model
-    - Reshape the final layer(s) to have the same number of outputs as the 
-        number of classes in the new dataset
-    - Define for the optimization algorithm which parameters we want to
-        update during training
-    - Run the training step
-"""
-
 from __future__ import print_function
 from __future__ import division
 import torch
@@ -27,24 +16,33 @@ print("Torchvision Version: ", torchvision.__version__)
 
 # Top level data directory. We assume here that the format of the directory
 # conforms to the ImageFolder structure (https://pytorch.org/docs/stable/torchvision/datasets.html#torchvision.datasets.ImageFolder)
-data_dir = "./hymenoptera_data"
+data_dir = "../model_training_data"
 
 # Models to choose from [resnet, alexnet, vgg, squeezenet, densenet, inception]
 model_name = "squeezenet"
+"""
+THIS MUST BE CHANGED: IT MUST BECOME A VARIABLE
+"""
 
-# Number of classes in the dataset
+# Number of classes in the dataset (Cats vs Dogs)
 num_classes = 2
 
 # Batch size for training (change depending on how much memory you have)
+"""
+MIGHT CHANGE THIS PARAMETER, DEPENDING ON RESULTS
+"""
 batch_size = 8
 
 # Number of epochs to train for
+"""
+MIGHT CHANGE THIS PARAMETER, DEPENDING ON RESULTS
+"""
 num_epochs = 15
 
 # Flag for feature extracting. 
 #   - False: we finetune the whole model
 #   - True: we only update the reshaped layer params
-feature_extract = True
+feature_extract = False             # Feature extraction is not enough for what we want to do
 
 def train_model(model, dataloaders, criterion, optimizer, num_epochs=25, is_inception=False):
     """
@@ -282,3 +280,9 @@ criterion = nn.CrossEntropyLoss()
 
 # Train and evaluate
 model_ft, hist = train_model(model_ft, dataloaders_dict, criterion, optimizer_ft, num_epochs=num_epochs, is_inception=(model_name=="inception"))
+
+# Save the model in the 'models' file
+saving_model_name = model_name + "_" + str(batch_size) + "_" + str(num_epochs) + ".pth"
+
+torch.save(model_ft.state_dict(), saving_model_name)
+print("Model saved!")
