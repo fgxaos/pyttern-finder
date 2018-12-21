@@ -281,8 +281,8 @@ criterion = nn.CrossEntropyLoss()
 # Train and evaluate
 model_ft, hist = train_model(model_ft, dataloaders_dict, criterion, optimizer_ft, num_epochs=num_epochs, is_inception=(model_name=="inception"))
 
-# Save the model in the 'models' file
-saving_model_name = model_name + "_" + str(batch_size) + "_" + str(num_epochs) + ".pth"
+# Save the model in the 'models' directory, in the 'model_saves' directory
+saving_model_name = "./model_saves" + model_name + "_" + str(batch_size) + "_" + str(num_epochs) + ".pth"
 
 torch.save(model_ft.state_dict(), saving_model_name)
 print("Model saved!")
