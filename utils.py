@@ -9,20 +9,26 @@ def load_model(arch):
         arch: (string) valid torchvision model name,
             recommendations 'vgg16' | 'googlenet' | 'resnet50'
     '''
-    if arch == 'googlenet':
+    """
+    First, we analyze the name to get all the information needed on the model
+    """
+    model_name, batch_size, number_epochs = extract_info_from_name(arch)
+
+    if model_name == 'googlenet':
         from googlenet import get_googlenet
         model = get_googlenet(pretrain=True)
-    elif arch == 'alexnet':
-
-    elif arch == 'vgg':
+    elif model_name == 'alexnet':
+        
+    elif model_name == 'vgg':
     
-    elif arch == 'resnet':
+    elif model_name == 'resnet':
     
-    elif arch == 'squeezenet':
+    elif model_name == 'squeezenet':
+        model_path = "./models/model_saves/squeezenet_" + str(batch_size) + "_" + str(number_epochs)
+        model = model.import(model_path)
+    elif model_name == 'densenet':
 
-    elif arch == 'densenet':
-
-    elif arch == 'inception':
+    elif model_name == 'inception':
 
     else:
         model = models.__dict__[arch](pretrained=True)
@@ -51,7 +57,10 @@ def extract_info_from_name(arch_name):
     # Architecture is named using the following code: 
     # saving_model_name = model_name + "_" + str(batch_size) + "_" + str(num_epochs) + ".pth"
     list_names = arch_name.split("_")
-    model_name = list_name[0]
-    batch_size = list_name[1]
-    num_epochs = list_name[2][:-4]
-    return model_name, batch_size, num_epochs
+    if(len(list_names < 3)):
+        return arch_name
+    else:
+        model_name = list_name[0]
+        batch_size = list_name[1]
+        number_epochs = list_name[2][:-4]
+        return model_name, batch_size, number_epochs
