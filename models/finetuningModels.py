@@ -285,4 +285,4 @@ model_ft, hist = train_model(model_ft, dataloaders_dict, criterion, optimizer_ft
 saving_model_name = "./model_saves" + model_name + "_" + str(batch_size) + "_" + str(num_epochs) + ".pth"
 
 torch.save(model_ft.state_dict(), saving_model_name)
-print("Model saved!")
+print("Model (state_dict) saved!")
