@@ -4,7 +4,7 @@ from torch._thnn import type2backend
 import torch
 
 # Model classes
-from models.model_classes import SqueezeNet
+from models.model_classes import *
 
         
 def load_model(arch):
@@ -21,22 +21,139 @@ def load_model(arch):
     if model_name == 'googlenet':
         from googlenet import get_googlenet
         model = get_googlenet(pretrain=True)
+
     elif model_name == 'alexnet':
-        print("Nothing happened")
-    elif model_name == 'vgg':
-        print("Nothing happened")
-    elif model_name == 'resnet':
-        print("Nothing happened")
-    elif model_name == 'squeezenet':
-        model_path = "./models/model_saves/squeezenet_" + str(batch_size) + "_" + str(number_epochs) + ".pth"
+        model_path = "./models/model_saves/alexnet_" + str(batch_size) + "_" + str(number_epochs) + ".pth"
+        model = AlexNet()
+
+    elif model_name == 'vgg11':
+        model_path = "./models/model_saves/vgg11_" + str(batch_size) + "_" + str(number_epochs) + ".pth"
+        kwargs['init_weights'] = False
+        model = VGG(make_layers(cfg['A']), **kwargs)
+
+    elif model_name == 'vgg11bn':
+        model_path = "./models/model_saves/vgg11bn_" + str(batch_size) + "_" + str(number_epochs) + ".pth"
+        kwargs['init_weights'] = False
+        model = VGG(make_layers(cfg['A'], batch_norm=True), **kwargs)
+    
+    elif model_name == 'vgg13':
+        model_path = "./models/model_saves/vgg13_" + str(batch_size) + "_" + str(number_epochs) + ".pth"
+        kwargs['init_weights'] = False
+        model = VGG(make_layers(cfg['B']), **kwargs)
+
+    elif model_name == 'vgg13bn':
+        model_path = "./models/model_saves/vgg13bn_" + str(batch_size) + "_" + str(number_epochs) + ".pth"
+        kwargs['init_weights'] = False
+        model = VGG(make_layers(cfg['B'], batch_norm=True), **kwargs)
+    
+    elif model_name == 'vgg16':
+        model_path = "./models/model_saves/vgg16_" + str(batch_size) + "_" + str(number_epochs) + ".pth"
+        kwargs['init_weights'] = False
+        model = VGG(make_layers(cfg['D']), **kwargs)
+    
+    elif model_name == 'vgg16bn':
+        model_path = "./models/model_saves/vgg16bn_" + str(batch_size) + "_" + str(number_epochs) + ".pth"
+        kwargs['init_weights'] = False
+        model = VGG(make_layers(cfg['D'], batch_norm=True), **kwargs)
+    
+    elif model_name == 'vgg19':
+        model_path = "./models/model_saves/vgg19_" + str(batch_size) + "_" + str(number_epochs) + ".pth"
+        kwargs['init_weights'] = False
+        model = VGG(make_layers(cfg['E']), **kwargs)
+    
+    elif model_name == 'vgg19bn':
+        model_path = "./models/model_saves/vgg19bn_" + str(batch_size) + "_" + str(number_epochs) + ".pth"
+        kwargs['init_weights'] = False
+        model = VGG(make_layers(cfg['E'], batch_norm=True), **kwargs)
+
+    elif model_name == 'resnet18':
+        model_path = "./models/model_saves/resnet18" + str(batch_size) + "_" + str(number_epochs) + ".pth"
+        model = ResNet(BasicBlock, [2, 2, 2, 2])
+
+    elif model_name == 'resnet34':
+        model_path = "./models/model_saves/resnet34" + str(batch_size) + "_" + str(number_epochs) + ".pth"
+        model = ResNet(BasicBlock, [3, 4, 6, 3])
+    
+    elif model_name == 'resnet50':
+        model_path = "./models/model_saves/resnet50" + str(batch_size) + "_" + str(number_epochs) + ".pth"
+        model = ResNet(BasicBlock, [3, 4, 6, 3])
+    
+    elif model_name == 'resnet101':
+        model_path = "./models/model_saves/resnet101" + str(batch_size) + "_" + str(number_epochs) + ".pth"
+        model = ResNet(BasicBlock, [3, 4, 23, 3])
+
+    elif model_name == 'resnet152':
+        model_path = "./models/model_saves/resnet152" + str(batch_size) + "_" + str(number_epochs) + ".pth"
+        model = ResNet(BasicBlock, [3, 8, 36, 3])
+
+    elif model_name == 'squeezenet10':
+        model_path = "./models/model_saves/squeezenet10_" + str(batch_size) + "_" + str(number_epochs) + ".pth"
         model = SqueezeNet(version=1.0)
-        model.load_state_dict(torch.load(model_path))
-    elif model_name == 'densenet':
-        print("Nothing happened")
-    elif model_name == 'inception':
-        print("Nothing happened")
+
+    elif model_name == 'squeezenet11':
+        model_path = "./models/model_saves/squeezenet11_" + str(batch_size) + "_" + str(number_epochs) + ".pth"
+        model = SqueezeNet(version=1.1)
+
+    elif model_name == 'densenet121':
+        model_path = "./models/model_saves/densenet121_" + str(batch_size) + "_" + str(number_epochs) + ".pth"
+        pattern = re.compile(
+            r'^(.*denselayer\d+\.(?:norm|relu|conv))\.((?:[12])\.(?:weight|bias|running_mean|running_var))$'
+        )
+        state_dict = model_zoo.load_url('https://download.pytorch.org/models/densenet121-a639ec97.pth')
+        for key in list(state_dict.keys()):
+            res = pattern.match(key)
+            if res:
+                new_key = res.group(1) + res.group(2)
+                state_dict[new_key] = state_dict[key]
+                del state_dict[key]
+
+    elif model_name == 'densenet169':
+        model_path = "./models/model_saves/densenet169_" + str(batch_size) + "_" + str(number_epochs) + ".pth"
+        pattern = re.compile(
+            r'^(.*denselayer\d+\.(?:norm|relu|conv))\.((?:[12])\.(?:weight|bias|running_mean|running_var))$'
+        )
+        state_dict = model_zoo.load_url('https://download.pytorch.org/models/densenet169-b2777c0a.pth')
+        for key in list(state_dict.keys()):
+            res = pattern.match(key)
+            if res:
+                new_key = res.group(1) + res.group(2)
+                state_dict[new_key] = state_dict[key]
+                del state_dict[key]
+        
+    elif model_name == 'densenet201':
+        model_path = "./models/model_saves/densenet201_" + str(batch_size) + "_" + str(number_epochs) + ".pth"
+        pattern = re.compile(
+            r'^(.*denselayer\d+\.(?:norm|relu|conv))\.((?:[12])\.(?:weight|bias|running_mean|running_var))$'
+        )
+        state_dict = model_zoo.load_url('https://download.pytorch.org/models/densenet201-c1103571.pth')
+        for key in list(state_dict.keys()):
+            res = pattern.match(key)
+            if res:
+                new_key = res.group(1) + res.group(2)
+                state_dict[new_key] = state_dict[key]
+                del state_dict[key]
+
+    elif model_name == 'densenet161':
+        model_path = "./models/model_saves/densenet161_" + str(batch_size) + "_" + str(number_epochs) + ".pth"
+        pattern = re.compile(
+            r'^(.*denselayer\d+\.(?:norm|relu|conv))\.((?:[12])\.(?:weight|bias|running_mean|running_var))$'
+        )
+        state_dict = model_zoo.load_url('https://download.pytorch.org/models/densenet161-8d451a50.pth')
+        for key in list(state_dict.keys()):
+            res = pattern.match(key)
+            if res:
+                new_key = res.group(1) + res.group(2)
+                state_dict[new_key] = state_dict[key]
+                del state_dict[key]
+
+    elif model_name == 'inceptionv3':
+        model_path = "./models/model_saves/inception3_" + str(batch_size) + "_" + str(number_epochs) + ".pth"
+        model = Inception3()
+        
     else:
         model = models.__dict__[arch](pretrained=True)
+    
+    model.load_state_dict(torch.load(model_path))
     model.eval()
     return model
 
