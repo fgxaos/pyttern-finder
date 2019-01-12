@@ -10,9 +10,14 @@ However, the existing models are not satisfying enough, as they have still troub
 
 With this project, I intend to implement a method which would give a result similar to lime's, but with a different process to be even more accurate.
 
+Thus, we could be able to find precise patterns in a picture, and tell if these patterns are important or not to classify the picture. This would be great to earn trust. For example, the machine recognized here a dog, because of the shape of the ears, the color of the skin or other features. 
+
+Another motivation to this project would be to see if it is possible to get a model/an explainer that corresponds to human understanding. Indeed, it seems to me that nothing guarantees that the way we think things is the most correct one. Why would the machine think likewise?
+
 ## Workflow
-
-
+1 - Select a classification neural network to treat the input picture
+2 - Select an explainer method
+3 - Display results
 
 ## General To Do List: 
 This project implemented GoogleNet using an old version of PyTorch; this doesn't work anymore
@@ -32,3 +37,6 @@ Thus, I need to use another neural network. I will use model finetuning in order
 ### Models
 * For now, only the _squeezenet_ model has been implemented. Add _resnet_, _alexnet_, _vgg_ (maybe already implemented, check it), _densenet_, _inception_
 * Once all these pre-trained models are implemented, create your own to find an even better solution
+
+### Explainers
+* For the time being, we stick to the different explainers already coded on this software
