@@ -35,7 +35,11 @@ Thus, I need to use another neural network. I will use model finetuning in order
 * Anyway, I'll have to adapt the displayed pictures and create a display grid for the images, that depend on the chosen parameters
 
 ### Models
+* Add all the new models (all the torchvision models) in _models/finetuningModels.py_, to train them on the dataset cat vs dog
+* Modify _models/finetuningModels.py_, so that the pre-trained models can be saved
+* Have a look at this [website](https://towardsdatascience.com/transfer-learning-with-convolutional-neural-networks-in-pytorch-dd09190245ce), to have the best models possible with the fewest computations
 * For now, only the _squeezenet_ model has been implemented. Add _resnet_, _alexnet_, _vgg_ (maybe already implemented, check it), _densenet_, _inception_
+* Once the former is complete, check that it works
 * Once all these pre-trained models are implemented, create your own to find an even better solution
 
 ### Explainers
