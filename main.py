@@ -17,29 +17,32 @@ params = {
 pylab.rcParams.update(params)
 os.environ['CUDA_VISIBLE_DEVICES'] = '0'
 
-"""
-model_methods = [
-    ['googlenet', 'vanilla_grad', 'imshow'], 
-    ['googlenet', 'grad_x_input', 'imshow'], 
-    ['googlenet', 'saliency', 'imshow'],
-    ['googlenet', 'integrate_grad', 'imshow'],
-    ['googlenet', 'deconv', 'imshow'], 
-    ['googlenet', 'guided_backprop', 'imshow'],
-    ['googlenet', 'gradcam', 'camshow'],
-    ['googlenet', 'excitation_backprop', 'camshow'], 
-    ['googlenet', 'contrastive_excitation_backprop', 'camshow'],
-    ['vgg16', 'pattern_net', 'imshow'],
-    ['vgg16', 'pattern_lrp', 'imshow'],
-    ['resnet50', 'real_time_saliency', 'camshow']
-]
-"""
 ## Add more model_methods if it works
+"""
 model_methods = [
-    ['squeezenet_8_12', 'vanilla_grad', 'imshow'],
+    ['squeezenet_8_15', 'vanilla_grad', 'imshow'],
+    ['squeezenet_8_15', 'grad_x_input', 'imshow'], 
+    ['squeezenet_8_15', 'saliency', 'imshow'],
+    ['squeezenet_8_15', 'integrate_grad', 'imshow'], 
+    ['squeezenet_8_15', 'deconv', 'imshow'], 
+    ['squeezenet_8_15', 'guided_backprop', 'imshow'],
+    ['squeezenet_8_15', 'gradcam', 'camshow'],
+    ['squeezenet_8_15', 'excitation_backprop', 'camshow'],
+    ['squeezenet_8_15', 'contrastive_excitation_backprop', 'camshow'],
 ]
-
+"""
+model_methods = [
+    ['squeezenet_8_15', 'vanilla_grad', 'imshow'],
+    ['squeezenet_8_15', 'grad_x_input', 'imshow'], 
+    ['squeezenet_8_15', 'saliency', 'imshow'],
+    ['squeezenet_8_15', 'integrate_grad', 'imshow'],
+    ['squeezenet_8_15', 'deconv', 'imshow'],
+    ['squeezenet_8_15', 'guided_backprop', 'imshow']
+]
 # Change 'displayed_class' to "dog" if you want to display for a dog
 displayed_class = "cat"
+# Change 'image_class' to 0 if you want to display for a dog
+image_class = 1
 
 # Take the sample image, and display it (original form)
 if displayed_class == "cat":
@@ -53,7 +56,7 @@ raw_img = viz.pil_loader(image_path)
 plt.figure(figsize=(5,5))
 plt.imshow(raw_img)
 plt.axis('off')
-plt.title("Displayed class: ", displayed_class)
+plt.title(displayed_class)
 
 # Now, we want to display the saliency maps of this image, for every model_method element
 all_saliency_maps = []
@@ -78,15 +81,15 @@ for model_name, method_name, _ in model_methods:
     target = torch.LongTensor([image_class]).cuda()
     saliency = explainer.explain(inp, target)
     saliency = utils.upsample(saliency, (raw_img.height, raw_img.width))
-    all_saliency_maps.append(saliency.cpy().numpy())
-
+    #all_saliency_maps.append(saliency.cpy().numpy())
+    all_saliency_maps.append(saliency.cpu().numpy())
 
 # Display all the results
 plt.figure(figsize=(25, 15))
 plt.subplot(3, 5, 1)
 plt.imshow(raw_img)
 plt.axis('off')
-plt.title('Displayed class: ', displayed_class)
+plt.title(displayed_class)
 for i, (saliency, (model_name, method_name, show_style)) in enumerate(zip(all_saliency_maps, model_methods)):
     plt.subplot(3, 5, i + 2 + i // 4)
     if show_style == 'camshow':
@@ -111,3 +114,4 @@ for i, (saliency, (model_name, method_name, show_style)) in enumerate(zip(all_sa
 plt.tight_layout()
 save_destination = 'images/' + displayed_class + '_saliency.png'
 plt.savefig(save_destination)
+plt.show()
