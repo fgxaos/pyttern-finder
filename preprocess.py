@@ -1,6 +1,7 @@
 import torchvision.transforms as transforms
 import numpy as np
 import torch
+from utils import extract_info_from_name
 
 
 class PatternPreprocess(object):
@@ -26,7 +27,9 @@ class PatternPreprocess(object):
         return ret
 
 
-def get_preprocess(arch, method):
+def get_preprocess(arch_name, method):
+    arch, batch_size, number_epochs = extract_info_from_name(arch_name)
+
     if arch == 'googlenet':
         transf = transforms.Compose([
             transforms.Resize((224, 224)),
@@ -101,7 +104,8 @@ def get_preprocess(arch, method):
             transforms.ToTensor(),
             normalize
         ])
-
+    else:
+        print("ERROR: Architecture not found")
     return transf
 
 
