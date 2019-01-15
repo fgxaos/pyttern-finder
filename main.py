@@ -32,15 +32,15 @@ model_methods = [
 ]
 """
 model_methods = [
-    ['squeezenet_8_15', 'vanilla_grad', 'imshow'],
-    ['squeezenet_8_15', 'grad_x_input', 'imshow'], 
-    ['squeezenet_8_15', 'saliency', 'imshow'],
-    ['squeezenet_8_15', 'integrate_grad', 'imshow'],
-    ['squeezenet_8_15', 'deconv', 'imshow'],
-    ['squeezenet_8_15', 'guided_backprop', 'imshow']
+    ['squeezenet10_8_15', 'vanilla_grad', 'imshow'],
+    ['squeezenet10_8_15', 'grad_x_input', 'imshow'], 
+    ['squeezenet10_8_15', 'saliency', 'imshow'],
+    ['squeezenet10_8_15', 'integrate_grad', 'imshow'],
+    ['squeezenet10_8_15', 'deconv', 'imshow'],
+    ['squeezenet10_8_15', 'guided_backprop', 'imshow']
 ]
 # Change 'displayed_class' to "dog" if you want to display for a dog
-displayed_class = "cat"
+displayed_class = "dog"
 # Change 'image_class' to 0 if you want to display for a dog
 image_class = 1
 
@@ -48,7 +48,7 @@ image_class = 1
 if displayed_class == "cat":
     image_path= 'models/cat_eating_fancy_ice_cream.jpg.838x0_q80.jpg'
 elif displayed_class == "dog":
-    image_path_dog = 'models/Natural-Dog-Law-2-To-dogs,-energy-is-everything.jpg'
+    image_path = 'models/Natural-Dog-Law-2-To-dogs,-energy-is-everything.jpg'
 else:
     print("Bad value for 'displayed_class', please check it")
 
