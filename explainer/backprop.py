@@ -1,6 +1,6 @@
 import numpy as np
-from torch.autograd import Variable, Function
 import torch
+from torch.autograd import Variable, Function
 import types
 
 
