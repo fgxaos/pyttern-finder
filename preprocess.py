@@ -3,6 +3,12 @@ import numpy as np
 import torch
 from utils import extract_info_from_name
 
+"""
+For the time being, we use "basic" definitions for the different versions
+of the models
+However, this should be redefined, so that it is correct for every model.
+I guess it should be specific to each version.
+"""
 
 class PatternPreprocess(object):
     # only work for VGG16
@@ -63,28 +69,14 @@ def get_preprocess(arch_name, method):
             transforms.Normalize(mean=[0.485, 0.456, 0.406],
             std=[0.229, 0.224, 0.225])
         ])
-    elif arch == 'resnet':
+    elif arch == 'resnet18':
         transf = transforms.Compose([
             transforms.Resize((224, 224)),
             transforms.ToTensor(),
             transforms.Normalize(mean=[0.485, 0.456, 0.406],
             std=[0.229, 0.224, 0.225])
         ])
-    elif arch == 'squeezenet10':
-        transf = transforms.Compose([
-            transforms.Resize((224, 224)),
-            transforms.ToTensor(),
-            transforms.Normalize(mean=[0.485, 0.456, 0.406],
-            std=[0.229, 0.224, 0.225])
-        ])
-    elif arch == 'densenet':
-        transf = transforms.Compose([
-            transforms.Resize((224, 224)),
-            transforms.ToTensor(),
-            transforms.Normalize(mean=[0.485, 0.456, 0.406],
-            std=[0.229, 0.224, 0.225])
-        ])
-    elif arch == 'inception':
+    elif arch == 'resnet34':
         transf = transforms.Compose([
             transforms.Resize((224, 224)),
             transforms.ToTensor(),
@@ -104,6 +96,70 @@ def get_preprocess(arch_name, method):
             transforms.ToTensor(),
             normalize
         ])
+    elif arch == 'resnet101':
+        transf = transforms.Compose([
+            transforms.Resize((224, 224)),
+            transforms.ToTensor(),
+            transforms.Normalize(mean=[0.485, 0.456, 0.406],
+            std=[0.229, 0.224, 0.225])
+        ])
+    elif arch == 'resnet152':
+        transf = transforms.Compose([
+            transforms.Resize((224, 224)),
+            transforms.ToTensor(),
+            transforms.Normalize(mean=[0.485, 0.456, 0.406],
+            std=[0.229, 0.224, 0.225])
+        ])
+    elif arch == 'squeezenet10':
+        transf = transforms.Compose([
+            transforms.Resize((224, 224)),
+            transforms.ToTensor(),
+            transforms.Normalize(mean=[0.485, 0.456, 0.406],
+            std=[0.229, 0.224, 0.225])
+        ])
+    elif arch == 'squeezenet11':
+        transf = transforms.Compose([
+            transforms.Resize((224, 224)),
+            transforms.ToTensor(),
+            transforms.Normalize(mean=[0.485, 0.456, 0.406],
+            std=[0.229, 0.224, 0.225])
+        ])
+    elif arch == 'densenet121':
+        transf = transforms.Compose([
+            transforms.Resize((224, 224)),
+            transforms.ToTensor(),
+            transforms.Normalize(mean=[0.485, 0.456, 0.406],
+            std=[0.229, 0.224, 0.225])
+        ])
+    elif arch == 'densenet169':
+        transf = transforms.Compose([
+            transforms.Resize((224, 224)),
+            transforms.ToTensor(),
+            transforms.Normalize(mean=[0.485, 0.456, 0.406],
+            std=[0.229, 0.224, 0.225])
+        ])
+    elif arch == 'densenet201':
+        transf = transforms.Compose([
+            transforms.Resize((224, 224)),
+            transforms.ToTensor(),
+            transforms.Normalize(mean=[0.485, 0.456, 0.406],
+            std=[0.229, 0.224, 0.225])
+        ])
+    elif arch == 'densenet161':
+        transf = transforms.Compose([
+            transforms.Resize((224, 224)),
+            transforms.ToTensor(),
+            transforms.Normalize(mean=[0.485, 0.456, 0.406],
+            std=[0.229, 0.224, 0.225])
+        ])
+    elif arch == 'inceptionv3':
+        transf = transforms.Compose([
+            transforms.Resize((224, 224)),
+            transforms.ToTensor(),
+            transforms.Normalize(mean=[0.485, 0.456, 0.406],
+            std=[0.229, 0.224, 0.225])
+        ])
+
     else:
         print("ERROR: Architecture not found")
     return transf
