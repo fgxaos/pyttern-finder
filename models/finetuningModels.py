@@ -18,11 +18,9 @@ print("Torchvision Version: ", torchvision.__version__)
 # conforms to the ImageFolder structure (https://pytorch.org/docs/stable/torchvision/datasets.html#torchvision.datasets.ImageFolder)
 data_dir = "../model_training_data"
 
-# Models to choose from [resnet, alexnet, vgg, squeezenet, densenet, inception]
-model_name = "squeezenet"
-"""
-THIS MUST BE CHANGED: IT MUST BECOME A VARIABLE
-"""
+# Models to choose from [resnet18, alexnet, vgg11bn, squeezenet10, densenet, inception3]
+model_name = "resnet"
+model_version = "18"
 
 # Number of classes in the dataset (Cats vs Dogs)
 num_classes = 2
@@ -282,7 +280,7 @@ criterion = nn.CrossEntropyLoss()
 model_ft, hist = train_model(model_ft, dataloaders_dict, criterion, optimizer_ft, num_epochs=num_epochs, is_inception=(model_name=="inception"))
 
 # Save the model in the 'models' directory, in the 'model_saves' directory
-saving_model_name = "./model_saves" + model_name + "_" + str(batch_size) + "_" + str(num_epochs) + ".pth"
+saving_model_name = "./model_saves/" + model_name + model_version + "_" + str(batch_size) + "_" + str(num_epochs) + ".pth"
 
 torch.save(model_ft.state_dict(), saving_model_name)
 print("Model (state_dict) saved!")
