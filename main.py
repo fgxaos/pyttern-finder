@@ -18,26 +18,19 @@ pylab.rcParams.update(params)
 os.environ['CUDA_VISIBLE_DEVICES'] = '0'
 
 ## Add more model_methods if it works
-"""
+# Already implemented: ['squeezenet10_8_15', 'resnet18_8_15']
+model_name = 'resnet18_8_15'
+
 model_methods = [
-    ['squeezenet_8_15', 'vanilla_grad', 'imshow'],
-    ['squeezenet_8_15', 'grad_x_input', 'imshow'], 
-    ['squeezenet_8_15', 'saliency', 'imshow'],
-    ['squeezenet_8_15', 'integrate_grad', 'imshow'], 
-    ['squeezenet_8_15', 'deconv', 'imshow'], 
-    ['squeezenet_8_15', 'guided_backprop', 'imshow'],
-    ['squeezenet_8_15', 'gradcam', 'camshow'],
-    ['squeezenet_8_15', 'excitation_backprop', 'camshow'],
-    ['squeezenet_8_15', 'contrastive_excitation_backprop', 'camshow'],
-]
-"""
-model_methods = [
-    ['squeezenet10_8_15', 'vanilla_grad', 'imshow'],
-    ['squeezenet10_8_15', 'grad_x_input', 'imshow'], 
-    ['squeezenet10_8_15', 'saliency', 'imshow'],
-    ['squeezenet10_8_15', 'integrate_grad', 'imshow'],
-    ['squeezenet10_8_15', 'deconv', 'imshow'],
-    ['squeezenet10_8_15', 'guided_backprop', 'imshow']
+    [model_name, 'vanilla_grad', 'imshow'],
+    [model_name, 'grad_x_input', 'imshow'], 
+    [model_name, 'saliency', 'imshow'],
+    [model_name, 'integrate_grad', 'imshow'],
+    [model_name, 'deconv', 'imshow'],
+    [model_name, 'guided_backprop', 'imshow'],
+    #[model_name, 'gradcam', 'camshow'],
+    #[model_name, 'excitation_backprop', 'camshow'],
+    #[model_name, 'contrastive_excitation_backprop', 'camshow']
 ]
 # Change 'displayed_class' to "dog" if you want to display for a dog
 displayed_class = "dog"
@@ -45,8 +38,10 @@ displayed_class = "dog"
 image_class = 1
 
 # Take the sample image, and display it (original form)
-if displayed_class == "cat":
-    image_path= 'models/cat_eating_fancy_ice_cream.jpg.838x0_q80.jpg'
+if displayed_class == "cat1":
+    image_path= 'models/cat1.jpg'
+elif displayed_class == "cat2":
+    image_path = 'models/cat2.jpg'    
 elif displayed_class == "dog":
     image_path = 'models/Natural-Dog-Law-2-To-dogs,-energy-is-everything.jpg'
 else:
@@ -112,6 +107,6 @@ for i, (saliency, (model_name, method_name, show_style)) in enumerate(zip(all_sa
         plt.title('%s' % (method_name))
 
 plt.tight_layout()
-save_destination = 'images/' + displayed_class + '_saliency.png'
+save_destination = 'images/' + model_name + '-' + displayed_class + '_saliency.png'
 plt.savefig(save_destination)
 plt.show()
