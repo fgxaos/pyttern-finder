@@ -14,5 +14,7 @@
 /images
 # Don't push the pretrained models
 *.pth
+# Don't push associated information
+*.txt
 
 MVPpresentation.md
