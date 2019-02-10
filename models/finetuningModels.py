@@ -14,6 +14,9 @@ import argparse
 print("PyTorch Version: ", torch.__version__)
 print("Torchvision Version: ", torchvision.__version__)
 
+# Typical command to train a network:
+# conda activate dl4nlp
+# python -m finetuningModels --batches=8 --epochs=15 --model=squeezenet --v=10
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -137,12 +140,14 @@ if __name__ == '__main__':
         time_elapsed = time.time() - since
         print('Training complete in {:.0f}m {:0f}s'.format(time_elapsed // 60, time_elapsed % 60))
         print('Best val Acc: {:4f}'.format(best_acc))
+        
         # Save this data in a file
-        model_info_file = open("./model_saves/" + model_name + model_version + "_" + str(batch_size) + "_" + str(num_epochs) + ".pth")
-
+        model_info_file = open("./model_saves/" + model_name + model_version + "_" + str(batch_size) + "_" + str(num_epochs) + ".txt", "w")
         model_info_file.write('The model computed here is: ')
         model_info_file.write(model_name + model_version + "_" + str(batch_size) + "_" + str(num_epochs) + ".pth")
+        model_info_file.write('\n')
         model_info_file.write('Training complete in {:.0f}m {:0f}s'.format(time_elapsed // 60, time_elapsed % 60))
+        model_info_file.write('\n')
         model_info_file.write('Best val Acc: {:4f}'.format(best_acc))
 
         model_info_file.close()
@@ -303,15 +308,19 @@ if __name__ == '__main__':
 
         dataloaders_dict = {x: torch.utils.data.DataLoader(image_datasets[x], batch_size=batch_size, shuffle=True, num_workers=4) for x in ['train', 'val']}
 
-        train_model(model_ft, dataloaders_dict, criterion, optimizer_ft, current_model=model_ft, num_epochs=num_epochs-epoch-1, is_inception=False, best_acc=checkpoint['best_acc'])
+        model_ft, hist = train_model(model_ft, dataloaders_dict, criterion, optimizer_ft, current_model=model_ft, num_epochs=num_epochs-epoch-1, is_inception=False, best_acc=checkpoint['best_acc'])
 
 
     else:   
         # Train and evaluate
+        dataloaders_dict = {x: torch.utils.data.DataLoader(image_datasets[x], batch_size=batch_size, shuffle=True, num_workers=4) for x in ['train', 'val']}
         model_ft, hist = train_model(model_ft, dataloaders_dict, criterion, optimizer_ft, num_epochs=num_epochs, is_inception=(model_name=="inception"))
 
     # Save the model in the 'models' directory, in the 'model_saves' directory
     saving_model_name = "./model_saves/" + model_name + model_version + "_" + str(batch_size) + "_" + str(num_epochs) + ".pth"
+    print("Saving path: ", saving_model_name)
 
     torch.save(model_ft.state_dict(), saving_model_name)
     print("Model (state_dict) saved!")
+    # We remove the temporary file computed
+    os.remove('./model_saves/temporary/' + model_name + model_version + "_" + str(batch_size) + "_" + str(num_epochs) + ".pth")
