@@ -22,7 +22,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--resume', type=bool, default=False)
     parser.add_argument('--model', type=str, default="")
-    parser.add_argument('--v', type=int, default=0)
+    parser.add_argument('--v', type=str, default="")
     parser.add_argument('--batches', type=int, default=8)
     parser.add_argument('--epochs', type=int, default=15)
     args = parser.parse_args()
