@@ -18,8 +18,8 @@ pylab.rcParams.update(params)
 os.environ['CUDA_VISIBLE_DEVICES'] = '0'
 
 ## Add more model_methods if it works
-# Already implemented: ['squeezenet10_8_15', 'resnet18_8_15']
-model_name = 'resnet18_8_15'
+# Already implemented: ['alexnet_8_15', 'resnet18_8_15', 'squeezenet10_8_15']
+model_name = 'squeezenet10_8_15'
 
 model_methods = [
     [model_name, 'vanilla_grad', 'imshow'],
@@ -34,18 +34,17 @@ model_methods = [
 ]
 # Change 'displayed_class' to "dog" if you want to display for a dog
 displayed_class = "dog"
+number_image = 5
 # Change 'image_class' to 0 if you want to display for a dog
-image_class = 1
+if(displayed_class == "dog"):
+    image_class = 0
+elif(displayed_class == "cat"):
+    image_class = 1
+else:
+    print("ERROR: wrong displayed class")
 
 # Take the sample image, and display it (original form)
-if displayed_class == "cat1":
-    image_path= 'models/cat1.jpg'
-elif displayed_class == "cat2":
-    image_path = 'models/cat2.jpg'    
-elif displayed_class == "dog":
-    image_path = 'models/Natural-Dog-Law-2-To-dogs,-energy-is-everything.jpg'
-else:
-    print("Bad value for 'displayed_class', please check it")
+image_path = "models/test_" + displayed_class + "_images/" + displayed_class + str(number_image) + ".jpg"
 
 raw_img = viz.pil_loader(image_path)
 plt.figure(figsize=(5,5))
@@ -107,6 +106,10 @@ for i, (saliency, (model_name, method_name, show_style)) in enumerate(zip(all_sa
         plt.title('%s' % (method_name))
 
 plt.tight_layout()
-save_destination = 'images/' + model_name + '-' + displayed_class + '_saliency.png'
+
+if not os.path.exists('images/' + model_name + '/'):
+    os.makedirs('images/' + model_name + '/')
+save_destination = 'images/' + model_name + '/' + displayed_class + str(number_image) + '_saliency.png'
+
 plt.savefig(save_destination)
 plt.show()
